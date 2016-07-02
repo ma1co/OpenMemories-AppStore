@@ -1,5 +1,6 @@
 package com.github.ma1co.openmemories.appstore;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -38,7 +39,12 @@ public class ConnectActivity extends BaseActivity {
     }
 
     public void onSettingsButtonClicked(View view) {
-        keepWifiOn();
-        startActivity(new Intent("com.sony.scalar.app.wifisettings.WifiSettings"));
+        try {
+            keepWifiOn();
+            startActivity(new Intent("com.sony.scalar.app.wifisettings.WifiSettings"));
+        } catch (ActivityNotFoundException e) {
+            Logger.error("Cannot open wifi settings", e);
+            showMessage("Cannot open wifi settings");
+        }
     }
 }

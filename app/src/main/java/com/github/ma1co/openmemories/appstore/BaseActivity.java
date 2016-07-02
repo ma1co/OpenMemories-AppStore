@@ -79,7 +79,7 @@ public class BaseActivity extends Activity {
         Logger.info("pausing " + getComponentName().getShortClassName());
         super.onPause();
         unregisterReceiver(receiver);
-        if (!keepWifiOn)
+        if (Environment.isCamera() && !keepWifiOn)
             setWifiEnabled(false);
         keepWifiOn = false;
     }
