@@ -10,8 +10,9 @@ public class App implements Serializable {
     public final int rank;
     public final String releaseVersion;
     public final String releaseDesc;
+    public final String releaseUrl;
 
-    public App(String id, String author, String name, String desc, int rank, String releaseVersion, String releaseDesc) {
+    public App(String id, String author, String name, String desc, int rank, String releaseVersion, String releaseDesc, String releaseUrl) {
         this.id = id;
         this.author = author;
         this.name = name;
@@ -19,5 +20,6 @@ public class App implements Serializable {
         this.rank = rank;
         this.releaseVersion = releaseVersion;
         this.releaseDesc = releaseDesc;
+        this.releaseUrl = releaseUrl;
     }
 }

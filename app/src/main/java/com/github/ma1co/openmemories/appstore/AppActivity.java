@@ -5,11 +5,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import org.apache.http.HttpEntity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -93,11 +94,13 @@ public class AppActivity extends WifiActivity {
                     File file = new File(Environment.getTempDir(), "openmemories_appstore.1.spk");
                     file.delete();
 
-                    Pair<Long, InputStream> spk = Api.downloadSpk(app.id);
-                    long total = spk.first;
-                    InputStream is = spk.second;
+                    HttpEntity entity = Http.get(app.releaseUrl);
+                    long total = entity.getContentLength();
+                    InputStream is = entity.getContent();
 
                     OutputStream os = new FileOutputStream(file);
+                    if (Environment.isCamera())
+                        os = new SpkWriter(os);
                     byte[] buffer = new byte[4096];
                     long read = 0;
                     int n;
@@ -146,18 +149,13 @@ public class AppActivity extends WifiActivity {
 
     @Override
     protected void onActivityResult(int request, int result, Intent intent) {
-        if (result == RESULT_OK)
-            afterInstall(intent.getIntExtra("com.sony.scalar.dlsys.scalarainstaller.ResultCode", 0));
-        else if (result >= RESULT_FIRST_USER)
-            afterInstall(result);
-        else
-            afterInstall(-1);
+        afterInstall(intent != null ? intent.getIntExtra("com.sony.scalar.dlsys.scalarainstaller.ResultCode", 1) : 1);
     }
 
     public void afterInstall(int result) {
         if (result == 0) {
             showMessage("App installed successfully");
-        } else {
+        } else if (result < 0) {
             String error = "Code " + result + " (" + getInstallerError(result) + ")";
             Logger.error("Error installing app: " + error);
             showMessage("Error installing app: " + error);

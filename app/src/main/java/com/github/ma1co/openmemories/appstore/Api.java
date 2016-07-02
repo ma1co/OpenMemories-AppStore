@@ -2,17 +2,14 @@ package com.github.ma1co.openmemories.appstore;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.util.Pair;
 
 import com.sony.scalar.sysutil.ScalarProperties;
 
-import org.apache.http.HttpEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 public class Api {
     public static final String base = "https://sony-pmca.appspot.com";
@@ -31,15 +28,11 @@ public class Api {
                     a.getString("desc").replace("\r\n", "\n"),
                     a.getInt("rank"),
                     r != null ? r.getString("version") : "0",
-                    r != null ? r.getString("desc").replace("\r\n", "\n") : "Not available"
+                    r != null ? r.getString("desc").replace("\r\n", "\n") : "Not available",
+                    r != null ? r.getString("url") : null
             );
         }
         return apps;
-    }
-
-    public static Pair<Long, InputStream> downloadSpk(String appId) throws IOException {
-        HttpEntity entity = Http.get(base + "/download/spk/app/" + appId);
-        return new Pair<>(entity.getContentLength(), entity.getContent());
     }
 
     public static void sendStats(PackageManager pm) throws IOException, JSONException {
