@@ -21,6 +21,7 @@ public class AppActivity extends WifiActivity {
 
     private App app;
     private TextView nameView;
+    private TextView authorView;
     private TextView descView;
     private TextView releaseVersionView;
     private TextView releaseDescView;
@@ -36,6 +37,7 @@ public class AppActivity extends WifiActivity {
         setTitle("App details");
         setContentView(R.layout.activity_app);
         nameView = (TextView) findViewById(R.id.name);
+        authorView = (TextView) findViewById(R.id.author);
         descView = (TextView) findViewById(R.id.desc);
         releaseVersionView = (TextView) findViewById(R.id.releaseVersion);
         releaseDescView = (TextView) findViewById(R.id.releaseDesc);
@@ -67,6 +69,7 @@ public class AppActivity extends WifiActivity {
         AppManager.Status status = AppManager.getStatus(getPackageManager(), app);
 
         nameView.setText(app.name);
+        authorView.setText("by " + app.author);
         descView.setText(app.desc);
         releaseVersionView.setText("Latest release: " + app.releaseVersion);
         releaseDescView.setText(app.releaseDesc);
