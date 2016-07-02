@@ -136,7 +136,8 @@ public class AppActivity extends WifiActivity {
         spkFile = file;
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-        keepWifiOn();
+        if (!getPackageName().equals(app.id))
+            keepWifiOn();
         startActivityForResult(intent, 0);
     }
 
@@ -179,7 +180,8 @@ public class AppActivity extends WifiActivity {
     }
 
     public void showDetails() {
-        keepWifiOn();
+        if (!getPackageName().equals(app.id))
+            keepWifiOn();
         startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + app.id)));
     }
 }
