@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.apache.http.HttpEntity;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -94,22 +92,24 @@ public class AppActivity extends WifiActivity {
                     File file = new File(Environment.getTempDir(), "openmemories_appstore.1.spk");
                     file.delete();
 
-                    HttpEntity entity = Http.get(app.releaseUrl);
-                    long total = entity.getContentLength();
-                    InputStream is = entity.getContent();
+                    Http.Response response = Http.get(app.releaseUrl);
+                    int total = response.getContentLength();
+                    InputStream is = response.getContent();
 
                     OutputStream os = new FileOutputStream(file);
                     if (Environment.isCamera())
                         os = new SpkWriter(os);
                     byte[] buffer = new byte[4096];
-                    long read = 0;
+                    int read = 0;
                     int n;
                     while ((n = is.read(buffer)) != -1) {
                         os.write(buffer, 0, n);
                         read += n;
-                        publishProgress((int) read, (int) total);
+                        publishProgress(read, total);
                     }
+                    is.close();
                     os.close();
+                    response.close();
 
                     file.setReadable(true, false);
                     return new Try<>(file);

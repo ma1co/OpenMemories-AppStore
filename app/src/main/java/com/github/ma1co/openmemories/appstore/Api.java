@@ -15,8 +15,10 @@ public class Api {
     public static final String base = "https://sony-pmca.appspot.com";
 
     public static App[] loadApps() throws IOException, JSONException {
-        String response = Http.getString(base + "/api/apps");
-        JSONArray array = new JSONArray(response);
+        Http.Response response = Http.get(base + "/api/apps");
+        String json = new String(response.getContentBytes());
+        response.close();
+        JSONArray array = new JSONArray(json);
         App[] apps = new App[array.length()];
         for (int i = 0; i < apps.length; i++) {
             JSONObject a = array.getJSONObject(i);
@@ -36,7 +38,8 @@ public class Api {
     }
 
     public static void sendStats(PackageManager pm) throws IOException, JSONException {
-        Http.post(base + "/api/stats", buildStatData(pm));
+        Http.Response response = Http.post(base + "/api/stats", buildStatData(pm));
+        response.close();
     }
 
     public static JSONObject buildStatData(PackageManager pm) throws JSONException {
