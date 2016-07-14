@@ -82,6 +82,7 @@ public class AppActivity extends WifiActivity {
             @Override
             protected void onPreExecute() {
                 Logger.info("Installing app " + app.id);
+                installButton.setEnabled(false);
                 progressContainer.setVisibility(View.VISIBLE);
                 progressBar.setIndeterminate(true);
             }
@@ -133,6 +134,7 @@ public class AppActivity extends WifiActivity {
                     Logger.error("Error downloading app", result.getException());
                     showMessage("Error downloading app");
                 }
+                installButton.setEnabled(true);
                 progressContainer.setVisibility(View.GONE);
             }
         }.execute();
