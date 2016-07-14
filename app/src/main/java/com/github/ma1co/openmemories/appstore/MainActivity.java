@@ -19,6 +19,7 @@ public class MainActivity extends TabActivity {
         });
 
         addTab("appList", "App list", AppListActivity.class);
+        addTab("external", "More apps", ExternalStoreActivity.class);
     }
 
     protected void addTab(String tag, String label, Class<? extends WifiActivity> activity) {

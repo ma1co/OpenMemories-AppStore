@@ -4,11 +4,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class AppListActivity extends WifiActivity {
     private View progressContainer;
@@ -22,20 +20,7 @@ public class AppListActivity extends WifiActivity {
         progressContainer = findViewById(R.id.progress_container);
         listView = (ListView) findViewById(R.id.list);
 
-        listViewAdapter = new ArrayAdapter<App>(this, 0) {
-            @Override
-            public View getView(int position, View view, ViewGroup parent) {
-                App app = getItem(position);
-                AppManager.Status status = AppManager.getStatus(getPackageManager(), app);
-                if (view == null)
-                    view = View.inflate(getContext(), R.layout.item_app_list, null);
-                ((TextView) view.findViewById(R.id.name)).setText(app.name);
-                ((TextView) view.findViewById(R.id.desc)).setText(app.desc);
-                ((TextView) view.findViewById(R.id.rank)).setText(app.rank + " downloads");
-                ((TextView) view.findViewById(R.id.install)).setText(status.toString());
-                return view;
-            }
-        };
+        listViewAdapter = new AppListAdapter(this);
         listView.setAdapter(listViewAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

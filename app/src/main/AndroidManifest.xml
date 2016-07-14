@@ -20,6 +20,8 @@
 
         <activity android:name=".AppListActivity"/>
 
+        <activity android:name=".ExternalStoreActivity"/>
+
         <activity android:name=".AppActivity"/>
 
         <activity android:name=".ConnectActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
