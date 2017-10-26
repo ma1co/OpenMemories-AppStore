@@ -45,19 +45,8 @@ public class AppActivity extends WifiActivity {
         progressContainer = findViewById(R.id.progress_container);
         progressBar = (ProgressBar) findViewById(R.id.progress);
 
-        installButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                downloadAndInstall();
-            }
-        });
-
-        detailsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDetails();
-            }
-        });
+        installButton.setOnClickListener(view -> downloadAndInstall());
+        detailsButton.setOnClickListener(view -> showDetails());
 
         app = (App) getIntent().getSerializableExtra(EXTRA_APP);
     }

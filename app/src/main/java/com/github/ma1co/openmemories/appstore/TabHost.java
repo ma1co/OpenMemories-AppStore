@@ -1,5 +1,7 @@
 package com.github.ma1co.openmemories.appstore;
 
+import android.app.Activity;
+import android.app.LocalActivityManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
@@ -13,18 +15,14 @@ import android.widget.TextView;
 public class TabHost extends android.widget.TabHost {
     public static TabHost inflate(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context).cloneInContext(context);
-        inflater.setFactory(new LayoutInflater.Factory() {
-            @Override
-            public View onCreateView(String name, Context context, AttributeSet attrs) {
-                return "TabHost".equals(name) ? new TabHost(context, attrs) : null;
-            }
-        });
+        inflater.setFactory((name, ctx, attrs) -> "TabHost".equals(name) ? new TabHost(ctx, attrs) : null);
         int layout = Resources.getSystem().getIdentifier("tab_content", "layout", "android");
         return (TabHost) inflater.inflate(layout, null);
     }
 
     public final int tabHeightDp = 26;
     private OnTabChangeListener onBeforeTabChangedListener;
+    private LocalActivityManager localActivityManager;
 
     public TabHost(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -32,6 +30,16 @@ public class TabHost extends android.widget.TabHost {
 
     public void setOnBeforeTabChangedListener(OnTabChangeListener l) {
         onBeforeTabChangedListener = l;
+    }
+
+    public Activity getActivity(String tag) {
+        return localActivityManager.getActivity(tag);
+    }
+
+    @Override
+    public void setup(LocalActivityManager m) {
+        super.setup(m);
+        this.localActivityManager = m;
     }
 
     @Override

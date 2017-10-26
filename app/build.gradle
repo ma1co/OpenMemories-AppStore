@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 10
-    buildToolsVersion "24"
 
     defaultConfig {
         applicationId "com.github.ma1co.openmemories.appstore"
@@ -12,8 +11,8 @@ android {
         versionName "git -C ${projectDir} describe --always --tags --dirty".execute().text.trim()
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

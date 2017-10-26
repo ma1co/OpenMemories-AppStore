@@ -10,13 +10,7 @@ public class MainActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         final TabHost tabHost = TabHost.inflate(this);
         setContentView(tabHost);
-
-        tabHost.setOnBeforeTabChangedListener(new TabHost.OnTabChangeListener() {
-            @Override
-            public void onTabChanged(String tag) {
-                ((WifiActivity) tabHost.getCurrentView().getContext()).keepWifiOn();
-            }
-        });
+        tabHost.setOnBeforeTabChangedListener(tag -> ((WifiActivity) tabHost.getActivity(tag)).keepWifiOn());
 
         addTab("appList", "App list", AppListActivity.class);
         addTab("external", "More apps", ExternalStoreActivity.class);

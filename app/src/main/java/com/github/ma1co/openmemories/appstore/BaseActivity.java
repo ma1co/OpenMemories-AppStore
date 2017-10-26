@@ -43,17 +43,14 @@ public class BaseActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         if (Environment.isCamera()) {
-            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-                @Override
-                public void uncaughtException(Thread thread, Throwable exp) {
-                    Logger.error("Uncaught exception", exp);
-                    System.exit(0);
-                }
+            Thread.setDefaultUncaughtExceptionHandler((thread, exp) -> {
+                Logger.error("Uncaught exception", exp);
+                System.exit(0);
             });
         }
 
         connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

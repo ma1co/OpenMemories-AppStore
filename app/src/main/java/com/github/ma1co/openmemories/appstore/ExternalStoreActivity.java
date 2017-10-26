@@ -3,15 +3,12 @@ package com.github.ma1co.openmemories.appstore;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class ExternalStoreActivity extends WifiActivity {
     public final int numResults = 20;
@@ -32,31 +29,17 @@ public class ExternalStoreActivity extends WifiActivity {
         listView = (ListView) findViewById(R.id.list);
 
         queryView.setHint("Search " + ExternalStoreApi.name + "...");
-        queryView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView view, int action, KeyEvent event) {
-                if (action == EditorInfo.IME_ACTION_UNSPECIFIED)
-                    loadApps(queryView.getText().toString());
-                return false;
-            }
+        queryView.setOnEditorActionListener((view, action, event) -> {
+            if (action == EditorInfo.IME_ACTION_UNSPECIFIED)
+                loadApps(queryView.getText().toString());
+            return false;
         });
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadApps(queryView.getText().toString());
-            }
-        });
+        searchButton.setOnClickListener(view -> loadApps(queryView.getText().toString()));
 
         listViewAdapter = new AppListAdapter(this);
         listView.setAdapter(listViewAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                showApp(listViewAdapter.getItem(position));
-            }
-        });
+        listView.setOnItemClickListener((adapterView, view, position, id) -> showApp(listViewAdapter.getItem(position)));
     }
 
     @Override
@@ -99,13 +82,10 @@ public class ExternalStoreActivity extends WifiActivity {
 
     public void setListContent(final App[] apps) {
         listViewAdapter.clear();
-        listView.getHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                listView.setSelectionAfterHeaderView();
-                for (App app : apps)
-                    listViewAdapter.add(app);
-            }
+        listView.getHandler().post(() -> {
+            listView.setSelectionAfterHeaderView();
+            for (App app : apps)
+                listViewAdapter.add(app);
         });
     }
 
